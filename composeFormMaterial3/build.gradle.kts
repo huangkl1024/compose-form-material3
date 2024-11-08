@@ -1,15 +1,17 @@
 plugins {
-    alias(libs.plugins.android.application)
+//    alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
 }
 
+
+
 android {
-    namespace = "com.github.huangkl1024.composeform.material3.app"
+    namespace = "com.github.huangkl1024.composeform.material3"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.github.huangkl1024.composeform.material3.app"
+        applicationId = "com.github.huangkl1024.composeform.material3"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -49,9 +51,8 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    implementation(project(":composeFormMaterial3"))
-    implementation(libs.koin.android)
-    implementation(libs.koin.androidx.compose)
+    implementation(libs.androidx.material.icons.extended)
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

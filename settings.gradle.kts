@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "ComposeFormMaterial3"
 include(":app")
- 
+include(":composeFormMaterial3")
