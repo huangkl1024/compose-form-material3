@@ -9,11 +9,13 @@ import com.github.huangkl1024.composeform.material3.app.di.ResourcesProvider
 import com.github.huangkl1024.composeform.material3.validators.DateValidator
 import com.github.huangkl1024.composeform.material3.validators.EmailValidator
 import com.github.huangkl1024.composeform.material3.validators.IsEqualValidator
+import com.github.huangkl1024.composeform.material3.validators.LocalDateValidator
 import com.github.huangkl1024.composeform.material3.validators.MinLengthValidator
 import com.github.huangkl1024.composeform.material3.validators.NotEmptyValidator
+import kotlinx.datetime.LocalDate
 import java.util.Date
 
-class MainForm(resourcesProvider: ResourcesProvider): Form() {
+class MainForm(resourcesProvider: ResourcesProvider) : Form() {
     override fun self(): Form {
         return this
     }
@@ -50,7 +52,7 @@ class MainForm(resourcesProvider: ResourcesProvider): Form() {
     @FormField
     val passwordConfirm = FieldState(
         state = mutableStateOf(null),
-        isVisible = { password.state.value != null && password.state.value!!.isNotEmpty()  },
+        isVisible = { password.state.value != null && password.state.value!!.isNotEmpty() },
         validators = mutableListOf(
             IsEqualValidator({ password.state.value })
         )
@@ -112,11 +114,32 @@ class MainForm(resourcesProvider: ResourcesProvider): Form() {
         validators = mutableListOf(
             NotEmptyValidator(),
             DateValidator(
-                minDateTime = {startDate.state.value?.time ?: 0},
+                minDateTime = { startDate.state.value?.time ?: 0 },
                 errorText = resourcesProvider.getString(R.string.error_date_after_start_date)
             )
         )
     )
+
+    @FormField
+    val startDate1 = FieldState(
+        state = mutableStateOf<LocalDate?>(null),
+        validators = mutableListOf(
+            NotEmptyValidator()
+        )
+    )
+
+    @FormField
+    val endDate1 = FieldState(
+        state = mutableStateOf(null),
+        validators = mutableListOf(
+            NotEmptyValidator(),
+            LocalDateValidator(
+                minDate = { startDate1.state.value ?: LocalDate(1970, 1, 1) },
+                errorText = resourcesProvider.getString(R.string.error_date_after_start_date)
+            )
+        )
+    )
+
 
     @FormField
     val agreeWithTerms = FieldState(

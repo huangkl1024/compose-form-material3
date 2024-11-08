@@ -52,6 +52,8 @@ dependencies {
     implementation(project(":composeFormMaterial3"))
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
+    implementation(libs.kotlinx.datetime)
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

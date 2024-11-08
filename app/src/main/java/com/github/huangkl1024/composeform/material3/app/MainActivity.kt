@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import com.github.huangkl1024.composeform.material3.app.ui.theme.ComposeFormMaterial3Theme
 import com.github.huangkl1024.composeform.material3.fields.CheckboxField
 import com.github.huangkl1024.composeform.material3.fields.DateField
+import com.github.huangkl1024.composeform.material3.fields.DatePickerField
 import com.github.huangkl1024.composeform.material3.fields.PasswordField
 import com.github.huangkl1024.composeform.material3.fields.PickerField
 import com.github.huangkl1024.composeform.material3.fields.TextField
@@ -138,6 +139,22 @@ fun FormPage() {
                             form = viewModel.form,
                             fieldState = viewModel.form.endDate,
                             themeResId = R.style.customDatePickerStyle,
+                            formatter = ::dateLong
+                        ).Field()
+
+                        DatePickerField(
+                            modifier = Modifier.padding(bottom = 8.dp),
+                            label = "Start Date1",
+                            form = viewModel.form,
+                            fieldState = viewModel.form.startDate1,
+                            formatter = ::dateShort
+                        ).Field()
+
+                        DatePickerField(
+                            modifier = Modifier.padding(bottom = 8.dp),
+                            label = "End Date1",
+                            form = viewModel.form,
+                            fieldState = viewModel.form.endDate1,
                             formatter = ::dateLong
                         ).Field()
 
