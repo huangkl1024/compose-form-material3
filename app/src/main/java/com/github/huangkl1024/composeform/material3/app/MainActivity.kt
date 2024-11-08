@@ -31,8 +31,10 @@ import com.github.huangkl1024.composeform.material3.fields.DatePickerField
 import com.github.huangkl1024.composeform.material3.fields.PasswordField
 import com.github.huangkl1024.composeform.material3.fields.PickerField
 import com.github.huangkl1024.composeform.material3.fields.TextField
+import com.github.huangkl1024.composeform.material3.fields.TimePickerField
 import com.github.huangkl1024.composeform.material3.formatters.dateLong
 import com.github.huangkl1024.composeform.material3.formatters.dateShort
+import com.github.huangkl1024.composeform.material3.formatters.time
 import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {
@@ -156,6 +158,22 @@ fun FormPage() {
                             form = viewModel.form,
                             fieldState = viewModel.form.endDate1,
                             formatter = ::dateLong
+                        ).Field()
+
+                        TimePickerField(
+                            modifier = Modifier.padding(bottom = 8.dp),
+                            label = "Start Time",
+                            form = viewModel.form,
+                            fieldState = viewModel.form.startTime,
+                            formatter = ::time
+                        ).Field()
+
+                        TimePickerField(
+                            modifier = Modifier.padding(bottom = 8.dp),
+                            label = "End Time",
+                            form = viewModel.form,
+                            fieldState = viewModel.form.endTime,
+                            formatter = ::time
                         ).Field()
 
                         CheckboxField(

@@ -5,22 +5,22 @@ import kotlinx.datetime.format.FormatStringsInDatetimeFormats
 import kotlinx.datetime.format.byUnicodePattern
 
 
-const val shortFormatPattern = "yy/MM/dd"
+const val shortDateFormatPattern = "yy/MM/dd"
 
 @OptIn(FormatStringsInDatetimeFormats::class)
 val shortDateFormat = LocalDate.Format {
-    byUnicodePattern(shortFormatPattern)
+    byUnicodePattern(shortDateFormatPattern)
 }
 
 fun dateShort(r: LocalDate?): String {
     return if (r != null) shortDateFormat.format(r) else ""
 }
 
-const val longFormatPattern = "yyyy-MM-dd"
+const val longDateFormatPattern = "yyyy-MM-dd"
 
 @OptIn(FormatStringsInDatetimeFormats::class)
 val longDateFormat = LocalDate.Format {
-    byUnicodePattern(longFormatPattern)
+    byUnicodePattern(longDateFormatPattern)
 }
 
 fun dateLong(r: LocalDate?): String {

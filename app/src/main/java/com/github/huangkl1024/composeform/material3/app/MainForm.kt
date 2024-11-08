@@ -10,9 +10,11 @@ import com.github.huangkl1024.composeform.material3.validators.DateValidator
 import com.github.huangkl1024.composeform.material3.validators.EmailValidator
 import com.github.huangkl1024.composeform.material3.validators.IsEqualValidator
 import com.github.huangkl1024.composeform.material3.validators.LocalDateValidator
+import com.github.huangkl1024.composeform.material3.validators.LocalTimeValidator
 import com.github.huangkl1024.composeform.material3.validators.MinLengthValidator
 import com.github.huangkl1024.composeform.material3.validators.NotEmptyValidator
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalTime
 import java.util.Date
 
 class MainForm(resourcesProvider: ResourcesProvider) : Form() {
@@ -135,6 +137,26 @@ class MainForm(resourcesProvider: ResourcesProvider) : Form() {
             NotEmptyValidator(),
             LocalDateValidator(
                 minDate = { startDate1.state.value ?: LocalDate(1970, 1, 1) },
+                errorText = resourcesProvider.getString(R.string.error_date_after_start_date)
+            )
+        )
+    )
+
+    @FormField
+    val startTime = FieldState(
+        state = mutableStateOf<LocalTime?>(null),
+        validators = mutableListOf(
+            NotEmptyValidator()
+        )
+    )
+
+    @FormField
+    val endTime = FieldState(
+        state = mutableStateOf(null),
+        validators = mutableListOf(
+            NotEmptyValidator(),
+            LocalTimeValidator(
+                minTime = { startTime.state.value ?: LocalTime(0, 0) },
                 errorText = resourcesProvider.getString(R.string.error_date_after_start_date)
             )
         )

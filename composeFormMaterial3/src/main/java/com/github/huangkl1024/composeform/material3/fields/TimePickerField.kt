@@ -1,48 +1,57 @@
 package com.github.huangkl1024.composeform.material3.fields
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Cancel
-import androidx.compose.material3.DatePicker
-import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.rememberDatePickerState
+import androidx.compose.material3.TimePicker
+import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.github.huangkl1024.composeform.material3.Field
 import com.github.huangkl1024.composeform.material3.FieldState
 import com.github.huangkl1024.composeform.material3.Form
 import com.github.huangkl1024.composeform.material3.components.TextFieldComponent
-import kotlinx.datetime.Instant
-import kotlinx.datetime.LocalDate
-import kotlinx.datetime.LocalDateTime
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toInstant
-import kotlinx.datetime.toLocalDateTime
+import kotlinx.datetime.LocalTime
 
-class DatePickerField(
+class TimePickerField(
     label: String,
     form: Form,
-    fieldState: FieldState<LocalDate?>,
+    fieldState: FieldState<LocalTime?>,
     modifier: Modifier? = Modifier,
     isEnabled: Boolean = true,
     imeAction: ImeAction = ImeAction.Next,
-    formatter: ((raw: LocalDate?) -> String)? = null,
-    changed: ((v: LocalDate?) -> Unit)? = null,
+    formatter: ((raw: LocalTime?) -> String)? = null,
+    changed: ((v: LocalTime?) -> Unit)? = null,
+    private val is24Hour: Boolean = true,
     private val confirmButtonText: String = "OK",
     private val dismissButtonText: String = "Cancel"
-) : Field<LocalDate>(
+) : Field<LocalTime>(
     label = label,
     form = form,
     fieldState = fieldState,
@@ -66,38 +75,27 @@ class DatePickerField(
 
         val focusRequester = FocusRequester()
         val focusManager = LocalFocusManager.current
-        var showDatePickerDialog by remember { mutableStateOf(false) }
-        if (showDatePickerDialog) {
-            val date = value.value
-            val initialSelectedDateMillis = remember(date) {
-                if (date != null) {
-                    val dateTime = LocalDateTime(date.year, date.month, date.dayOfMonth, 0, 0, 0)
-                    dateTime.toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds()
-                } else {
-                    null
-                }
-            }
-            val datePickerState = rememberDatePickerState(initialSelectedDateMillis)
-            val confirmEnabled = remember {
-                derivedStateOf { datePickerState.selectedDateMillis != null }
-            }
-            DatePickerDialog(
+
+        var showTimePickerDialog by remember { mutableStateOf(false) }
+        if (showTimePickerDialog) {
+            val initHour = value.value?.hour ?: 0
+            val initialMinute = value.value?.minute ?: 0
+            val timePickerState = rememberTimePickerState(initHour, initialMinute, is24Hour)
+            TimePickerDialog(
                 onDismissRequest = {
-                    showDatePickerDialog = false
+                    showTimePickerDialog = false
                     focusManager.clearFocus()
                 },
                 confirmButton = {
                     TextButton(
                         onClick = {
-                            showDatePickerDialog = false
+                            showTimePickerDialog = false
                             focusManager.clearFocus()
-                            val selectedDate =
-                                Instant.fromEpochMilliseconds(datePickerState.selectedDateMillis!!)
-                                    .toLocalDateTime(TimeZone.currentSystemDefault()).date
-                            value.value = selectedDate
-                            this.onChange(selectedDate, form)
+                            val selectedTime =
+                                LocalTime(timePickerState.hour, timePickerState.minute)
+                            value.value = selectedTime
+                            this.onChange(selectedTime, form)
                         },
-                        enabled = confirmEnabled.value
                     ) {
                         Text(confirmButtonText)
                     }
@@ -105,16 +103,17 @@ class DatePickerField(
                 dismissButton = {
                     TextButton(
                         onClick = {
-                            showDatePickerDialog = false
+                            showTimePickerDialog = false
                             focusManager.clearFocus()
                         }
                     ) {
                         Text(dismissButtonText)
                     }
+                },
+                content = {
+                    TimePicker(state = timePickerState)
                 }
-            ) {
-                DatePicker(state = datePickerState)
-            }
+            )
         }
 
         var trailingIcon: @Composable (() -> Unit)? = null
@@ -136,10 +135,53 @@ class DatePickerField(
             focusRequester = focusRequester,
             focusChanged = {
                 if (it.isFocused) {
-                    showDatePickerDialog = true
+                    showTimePickerDialog = true
                 }
             },
             trailingIcon = trailingIcon
         )
+    }
+}
+
+@Composable
+fun TimePickerDialog(
+    onDismissRequest: () -> Unit,
+    confirmButton: @Composable () -> Unit,
+    dismissButton: @Composable () -> Unit,
+    content: @Composable () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Dialog(
+        onDismissRequest = onDismissRequest,
+        properties = DialogProperties(usePlatformDefaultWidth = false),
+    ) {
+        Surface(
+            shape = MaterialTheme.shapes.extraLarge,
+            tonalElevation = 6.dp,
+            modifier =
+            modifier
+                .width(IntrinsicSize.Min)
+                .height(IntrinsicSize.Min)
+                .background(
+                    shape = MaterialTheme.shapes.extraLarge,
+                    color = MaterialTheme.colorScheme.surface
+                ),
+        ) {
+            Column(
+                modifier = Modifier.padding(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                content()
+                Row(
+                    modifier = Modifier
+                        .height(40.dp)
+                        .fillMaxWidth()
+                ) {
+                    Spacer(modifier = Modifier.weight(1f))
+                    dismissButton()
+                    confirmButton()
+                }
+            }
+        }
     }
 }
