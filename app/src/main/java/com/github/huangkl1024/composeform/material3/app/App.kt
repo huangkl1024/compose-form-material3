@@ -1,9 +1,9 @@
-package com.github.huangkl1024.composeform.material3
+package com.github.huangkl1024.composeform.material3.app
 
 import android.app.Application
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.github.huangkl1024.composeform.material3.di.appModules
+import com.github.huangkl1024.composeform.material3.app.di.appModules
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.GlobalContext.startKoin

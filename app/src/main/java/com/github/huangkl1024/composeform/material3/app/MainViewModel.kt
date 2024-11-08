@@ -1,9 +1,8 @@
-package com.edorex.mobile.composeForm
+package com.github.huangkl1024.composeform.material3.app
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.github.huangkl1024.composeform.material3.MainForm
-import com.github.huangkl1024.composeform.material3.di.ResourcesProvider
+import com.github.huangkl1024.composeform.material3.app.di.ResourcesProvider
 import com.github.huangkl1024.composeform.material3.validators.NotEmptyValidator
 
 class MainViewModel(
@@ -18,7 +17,7 @@ class MainViewModel(
     }
 
     fun doSomething() {
-//        form.name.validators.removeIf { it::class == NotEmptyValidator::class }
-//        form.name.state.value = "Benji"
+        form.name.validators.removeIf { it::class == NotEmptyValidator::class }
+        form.name.state.value = "Benji"
     }
 }

@@ -1,4 +1,4 @@
-package com.github.huangkl1024.composeform.material3.ui.theme
+package com.github.huangkl1024.composeform.material3.app.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

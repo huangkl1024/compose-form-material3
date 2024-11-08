@@ -1,4 +1,4 @@
-package com.github.huangkl1024.composeform.material3.ui.theme
+package com.github.huangkl1024.composeform.material3.app.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

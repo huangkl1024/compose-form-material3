@@ -1,8 +1,8 @@
-package com.github.huangkl1024.composeform.material3.di
+package com.github.huangkl1024.composeform.material3.app.di
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.edorex.mobile.composeForm.MainViewModel
+import com.github.huangkl1024.composeform.material3.app.MainViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
